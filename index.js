@@ -6,6 +6,16 @@ const multer = require('multer')
 const up = multer({dest:'uploads/'})
 const bP = require('body-parser')
 var app = express();
+const fs = require('fs')
+
+const getBytes = (f) => {
+  f = f+''
+  var stats = fs.statSync(f);
+  var bytes = stats.size;
+  console.log(bytes)
+  return bytes;
+}
+
 
 app.use(cors());
 app.use(express.urlencoded({extended:true}))
@@ -21,7 +31,7 @@ app.get('/', function (req, res) {
 
 app.post("/api/fileanalyse", up.single('upfile'),(req,res)=>{
   console.log(req.file)
-  return !req.file ? res.send("Nothing was uploaded") : res.json({ name:req.file.filename, type:req.file.mimetype, size:req.file.size })
+  return !req.file ? res.send("Nothing was uploaded") : res.json({ name:req.file.originalname, type:req.file.mimetype, size: req.file.size})// or getBytes(`/mnt/chromeos/MyFiles/Downloads/`+req.file.originalname)
 })
 
 
