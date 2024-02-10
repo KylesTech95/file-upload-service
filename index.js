@@ -21,8 +21,6 @@ app.get('/', function (req, res) {
 
 app.post("/api/fileanalyse", up.single('upfile'),(req,res)=>{
   console.log(req.file)
-
-
   return !req.file ? res.send("Nothing was uploaded") : res.json({ name:req.file.filename, type:req.file.mimetype, size:req.file.size })
 })
 
